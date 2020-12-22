@@ -213,7 +213,7 @@ class MainController extends Controller
 
         $tokens = $this->stopWordRemoval();
 
-
+        dd($tokens);
 
         $tokensFlatten = [];
         $docsNo = [];
@@ -238,17 +238,18 @@ class MainController extends Controller
                     $docsNo[$term] = [$docID];
                 }
 
+
             }
 
         }
 
         sort($tokensFlatten);
 
-
+        dd($tokensFlatten);
 
         $tokenFrequencies = array_count_values(($tokensFlatten));
 
-
+        dd($tokenFrequencies);
 
         return view('inverted-index',compact('tokenFrequencies','docsNo'));
 
@@ -258,7 +259,12 @@ class MainController extends Controller
     public function stopWordRemoval()
     {
         $tokens = [];
-
+        $files_size = [];
+/*
+ * [
+ *  "term" => [docID => [p1, p2, p3]]
+ * ]
+ * */
 
         for($i = 0 ; $i <= 9 ; $i++)
         {
@@ -266,10 +272,42 @@ class MainController extends Controller
 
             while ($token !== false)
             {
-                in_array($token,self::$stopWordList) ?:  $tokens[$i][$token] = $i + 1;
+                array_push($tokens, $token);
                 $token = strtok(" \n\t");
             }
+
+            array_push($files_size ,str_word_count($this->files[$i]));
         }
+        // cats dogs run run run run khaled
+        $test_array = [];
+        $array_keys = [];
+        $k = 0;
+        $l = 0;
+        for($i = 0 ; $i < count($files_size) ; $i++)
+        {
+            $position = 0;
+            $l = $l + $files_size[$i];
+            for (; $k < $l; $k++){
+                for ($j = $k; $j < $l; $j++){
+                    if($tokens[$j] == $tokens[$k]){
+
+                        array_push($test_array, $j);
+                    }
+                }
+                if(!array_key_exists($tokens[$k], $array_keys)){
+                    $array_keys[$tokens[$k]] = $i . ': ' . json_encode($test_array);
+                }
+//                echo $tokens[$k] . '=> ' . $i . ': ' . json_encode($test_array) . '<br>';
+                $test_array = [];
+            }
+
+
+//            array_push($files_size ,str_word_count($this->files[$i]));
+        }
+
+dd($array_keys);
+
+        dd('done');
 
         return $tokens;
     }
