@@ -23,20 +23,6 @@ class TokenizerController extends Controller
 
 
 
-
-    public function query()
-    {
-        return view('query-result');
-    }
-
-    public function queryResult()
-    {
-        dd('hello');
-        return view('query-result');
-    }
-
-
-
     public function getFiles()
     {
 

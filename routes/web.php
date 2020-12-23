@@ -20,5 +20,4 @@ Route::get('/',function(){
 Route::get('/tokenization','TokenizerController@viewTokens');
 Route::get('/Stop-word-removal','StopWordRemovalController@stopWordRemovalView');
 Route::get('/positional_index_model','PositionalIndexController@buildModel');
-Route::get('/do-query','MainController@query');
-Route::post('/do-query','MainController@queryResult');
+
