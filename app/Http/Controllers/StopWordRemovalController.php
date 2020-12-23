@@ -177,4 +177,5 @@ class StopWordRemovalController extends Controller
 
         return $tokensWithDocID;
     }
+
 }
