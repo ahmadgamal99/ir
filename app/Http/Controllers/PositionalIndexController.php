@@ -16,6 +16,8 @@ class PositionalIndexController extends Controller
          *  "positions" => [
          *      'doc1' => [1,2,3,4],
          *      'doc2' => [1,2,3,4],
+         *      'doc3' => [1,2,3,4],
+         *      ...................,
          *  ]
          * ]
          * */
