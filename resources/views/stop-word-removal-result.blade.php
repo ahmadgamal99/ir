@@ -11,15 +11,12 @@
             </tr>
             </thead>
             <tbody>
-       @foreach($tokens as $token)
-
-        @foreach($token as $term => $docID)
-            <tr>
-                <td>{{$term}}</td>
-                <td>{{$docID}}</td>
-            </tr>
-        @endforeach
-        @endforeach
+           @foreach($tokensWithDocID as $item)
+               <tr>
+                   <td>{{$item['token']}}</td>
+                   <td>{{$item['docID']}}</td>
+               </tr>
+            @endforeach
             </tbody>
         </table>
 
@@ -27,6 +24,7 @@
     </div>
 
     <div class="mx-auto">
-            <a href="/inverted-index" class="btn btn-primary shadow-lg font-size-h1 mx-auto text-center mb-20" type="submit" style="width:fit-content">Inverted Index</a>
+            <a href="/positional_index_model" class="btn btn-primary shadow-lg font-size-h1 mx-auto text-center mb-20" type="submit" style="width:fit-content">Positional Index Model</a>
+            <a href="/positional_index_model" class="btn btn-primary shadow-lg font-size-h1 mx-auto text-center mb-20" type="submit" style="width:fit-content">Vector Space Model</a>
     </div>
 @endsection

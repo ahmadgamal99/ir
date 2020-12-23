@@ -11,15 +11,12 @@
             </tr>
             </thead>
             <tbody>
-       @foreach($tokens as $token)
-
-        @foreach($token as $term => $docID)
-            <tr>
-                <td>{{$term}}</td>
-                <td>{{$docID}}</td>
-            </tr>
-        @endforeach
-        @endforeach
+           @foreach($tokensWithDocID as $item)
+               <tr>
+                   <td>{{$item['token']}}</td>
+                   <td>{{$item['docID']}}</td>
+               </tr>
+            @endforeach
             </tbody>
         </table>
 
