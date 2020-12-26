@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use writecrow\Lemmatizer\Lemmatizer;
 
 class TokenizerController extends Controller
 {
@@ -47,6 +48,7 @@ class TokenizerController extends Controller
             $token = strtok($file , " \n\t");
             while ($token !== false)
             {
+//                $token = Lemmatizer::getLemma($token);
                 array_push($tokens, $token);
                 $token = strtok(" \n\t");
             }

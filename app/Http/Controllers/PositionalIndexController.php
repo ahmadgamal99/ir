@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use writecrow\Lemmatizer\Lemmatizer;
 
 class PositionalIndexController extends Controller
 {
     public function positionalModelView()
     {
         $positionalIndex = $this->buildModel();
-        dd($positionalIndex);
         return view('positional_index_model',[
             'positionalIndex' => $positionalIndex
         ]);
@@ -49,7 +49,6 @@ class PositionalIndexController extends Controller
                     $positions[$docId] =  $occurrences;
                 }
             }
-
             array_push($positionalIndex, [
                 'term' => $token,
                 'frequency' => $frequency,
@@ -73,6 +72,7 @@ class PositionalIndexController extends Controller
         $positionalIndex = collect($positionalIndex);
         $selectedPositions = $positionalIndex->whereIn('term', $terms)->pluck('positions')->toArray();
         $selectedPositionKeys = [];
+
         foreach ($selectedPositions as $selectedPosition) {
             array_push($selectedPositionKeys,array_keys($selectedPosition));
         }
