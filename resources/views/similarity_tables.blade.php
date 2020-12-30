@@ -3,7 +3,7 @@
     <div>
         <h1 class="text-center pt-25 font-weight-bolder">Similarity Tables</h1>
     <div class="flex-center p-35 d-block">
-        @foreach($similarity_tables as $item)
+        @foreach($similarityTables as $key => $item)
         <table class="table table-dark rounded p-10 text-center" style="">
             <thead>
             <tr>
@@ -15,15 +15,17 @@
             </tr>
             </thead>
             <tbody>
+                @foreach($item as $term => $value)
+                    <tr>
+                        <td>{{$term}}</td>
+                        <td>{{$value['tf']}}</td>
+                        <td>{{$value['tfWeight']}}</td>
+                        <td>{{$value['tf-idf']}}</td>
+                        <td>{{$value['normalize']}}</td>
 
-               <tr>
-                   <td>{{$item['term']}}</td>
-                   <td>{{$item['tf']}}</td>
-                   <td>{{$item['tf-weight']}}</td>
-                   <td>{{$item['tf-idf']}}</td>
-                   <td>{{$item['normalize']}}</td>
+                    </tr>
+                @endforeach
 
-               </tr>
 
             </tbody>
         </table>

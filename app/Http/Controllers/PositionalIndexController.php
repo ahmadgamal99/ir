@@ -66,6 +66,7 @@ class PositionalIndexController extends Controller
     {
         return view('do_query');
     }
+
     public function queryResult(Request $request)
     {
 
@@ -107,7 +108,6 @@ class PositionalIndexController extends Controller
                     $token = strtok(" \n\t\r");
                 }
 
-                dd($fileContentLemmitized);
 
                 !str_contains($fileContentLemmitized, implode(" " , $terms) ) ?: array_push($relevantDocs, $intersectedDoc);
 
@@ -118,6 +118,7 @@ class PositionalIndexController extends Controller
             $relevantDocs = $selectedPositionKeys[0];
         }
 
+        dd($relevantDocs);
 
         return view('query_result');
     }

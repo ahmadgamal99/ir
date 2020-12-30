@@ -125,44 +125,21 @@ class VectorSpaceController extends Controller
     public function Normailize()
     {
 
+        $similarityTables = $this->buildSimilarityTables();
+
+        return view('similarity_tables' , compact('similarityTables'));
+
+
+    }
+
+    public function buildSimilarityTables()
+    {
         $tokenizer = new TokenizerController();
         $files = $tokenizer->getFiles();
         $uniqueTokens = array_unique($tokenizer->constructTokens());
         $stopWords = StopWordRemovalController::$stopWordList;
-        $similarity_tables = [];
-//        foreach ($uniqueTokens as $key => $term)
-//        {
-//            if(in_array($term, $stopWords))
-//            {
-//                unset($uniqueTokens[$key]);
-//            }
-//        }
 
-//        foreach($uniqueTokens as  $uniqueToken)
-//        {
-//            $df = 0;
-//            foreach ($tokenizer->files as  $file)
-//            {
-//                ! str_contains($file , $uniqueToken) ?: ++$df;
-//            }
-//
-//            foreach($files as $fileIndex => $file)
-//            {
-//
-//                $tf = substr_count($file , $uniqueToken);
-//
-//                $tfWeight = round(log(1 + $tf , 10) , 1);
-//
-//                $idfWeight = round(log(10/$df, 10),1);
-//
-//                $similarity_tables[$fileIndex][$uniqueToken]['term'] = $uniqueToken;
-//                $similarity_tables[$fileIndex][$uniqueToken]['tf'] = $tf;
-//                $similarity_tables[$fileIndex][$uniqueToken]['tf-weight'] = $tfWeight;
-//                $similarity_tables[$fileIndex][$uniqueToken]['tf-idf'] = $tfWeight * $idfWeight;
-//                $similarity_tables[$fileIndex][$uniqueToken]['normalize'] = 0;
-//
-//            }
-//        }
+        $similarityTables = [];
 
         foreach ($files as $fileIndex => $file)
         {
@@ -170,46 +147,74 @@ class VectorSpaceController extends Controller
 
             $token = strtok($fileContent , " \n\t\r");
 
-            $fileContentLemmitized = "";
+            $uniqueTokens = [];
 
             while ($token !== false)
             {
                 $token = Lemmatizer::getLemma($token);
 
-                if(! in_array($token, StopWordRemovalController::$stopWordList) && ! str_contains($fileContentLemmitized , $token)){
-
-                    $fileContentLemmitized .= $token . " ";
-
-                    $tf = substr_count($file , $token);
-
-                    $tfWeight = round(log(1 + $tf , 10) , 1);
-
-                    $idfWeight = round(log(10/$df, 10),1);
+                if(! in_array($token, StopWordRemovalController::$stopWordList) && ! in_array($token, $uniqueTokens)){
+                    array_push($uniqueTokens, $token);
 
                 }
-
 
                 $token = strtok(" \n\t\r");
             }
 
 
+            foreach ($uniqueTokens as $uniqueToken) {
+                $df = 0;
+                foreach ($files as  $file)
+                {
+                    ! str_contains($file , $uniqueToken) ?: ++$df;
+                }
 
+                $tf = substr_count($file , $uniqueToken);
 
+                $tfWeight = round(log(1 + $tf , 10) , 1);
 
-                $similarity_tables[$fileIndex][$uniqueToken]['term'] = $uniqueToken;
-                $similarity_tables[$fileIndex][$uniqueToken]['tf'] = $tf;
-                $similarity_tables[$fileIndex][$uniqueToken]['tf-weight'] = $tfWeight;
-                $similarity_tables[$fileIndex][$uniqueToken]['tf-idf'] = $tfWeight * $idfWeight;
-                $similarity_tables[$fileIndex][$uniqueToken]['normalize'] = 0;
+                $idfWeight = round(log(10/$df, 10),1);
+
+                $similarityTables[$fileIndex][$uniqueToken] = [
+                    "tf" => $tf,
+                    "tfWeight" => $tfWeight,
+                    "idfWeight" => $idfWeight,
+                    "tf-idf" => $tfWeight * $idfWeight,
+                    "normalize" => 0, // tf-idf / length
+                ];
+            }
 
 
         }
 
+        $similarityTables = collect($similarityTables);
+        $docsLengths = [];
 
+        foreach ($similarityTables as $similarityTable) {
+            $length = collect($similarityTable)->map(function($item){
+                return pow($item['tf-idf'], 2);
+            })->sum();
 
-        dd($similarity_tables);
-        return view('similarity_tables' , compact('similarity_tables'));
+            $updateSimilarity =collect($similarityTable)->map(function($item) use ($length, $similarityTables) {
+                $item['normalize'] = $item['tf-idf'] /$length;
+            });
 
+            array_push($docsLengths, $length);
+        }
+        $newSimilarityTables = [];
+        foreach ($docsLengths as $index => $length) {
+            foreach ($similarityTables[$index] as $token => $similarityTable) {
 
+                $newSimilarityTables[$index][$token] = [
+                    "tf" => $similarityTable['tf'],
+                    "tfWeight" => $similarityTable['tfWeight'],
+                    "idfWeight" => $similarityTable['idfWeight'],
+                    "tf-idf" => $similarityTable['tf-idf'],
+                    "normalize" => $similarityTable['tf-idf'] /$length, // tf-idf / length
+                ];
+            }
+
+        }
+        return $newSimilarityTables;
     }
 }
