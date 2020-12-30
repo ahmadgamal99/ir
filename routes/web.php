@@ -24,5 +24,6 @@ Route::get('/do-query','PositionalIndexController@doQuery');
 Route::get('/term_frequency_matrix','VectorSpaceController@termFrequency');
 Route::get('/idf','VectorSpaceController@inverseDocumentFrequency');
 Route::get('/tf-idf-matrix','VectorSpaceController@TF_IDFWeightMatrix');
+Route::get('/similarity','VectorSpaceController@Normailize');
 Route::post('/do-query','PositionalIndexController@queryResult');
 

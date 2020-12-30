@@ -36,6 +36,7 @@
     </div>
 
     <div class="mx-auto">
-            <a href="/idf" class="btn btn-primary shadow-lg font-size-h1 mx-auto text-center mb-20" type="submit" style="width:fit-content">Similarity</a>
+            <a href="/similarity" class="btn btn-primary shadow-lg font-size-h1 mx-auto text-center mb-20" type="submit" style="width:fit-content">Similarity</a>
     </div>
+
 @endsection
