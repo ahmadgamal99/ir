@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="af41f400-d6be-4361-98c5-2c6feb07abfe" name="Default Changelist" comment="" />
+    <list default="true" id="af41f400-d6be-4361-98c5-2c6feb07abfe" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PositionalIndexController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PositionalIndexController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TokenizerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TokenizerController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/VectorSpaceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/VectorSpaceController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/stop-word-removal-result.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/stop-word-removal-result.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_10.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_10.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +26,9 @@
         <option value="composer.json" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -142,6 +154,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ahmed\ir\resources\views" />
+      <recent name="C:\Users\ahmed\ir" />
       <recent name="C:\Users\ahmed\IrProject\resources\views" />
     </key>
   </component>
@@ -165,6 +179,8 @@
       <workItem from="1608409122445" duration="1819000" />
       <workItem from="1608448657704" duration="6642000" />
       <workItem from="1608466959374" duration="166000" />
+      <workItem from="1609010087648" duration="8418000" />
+      <workItem from="1609020417320" duration="10000" />
     </task>
     <servers />
   </component>

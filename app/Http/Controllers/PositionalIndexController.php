@@ -17,6 +17,7 @@ class PositionalIndexController extends Controller
     }
     public function buildModel()
     {
+
         $tokenizer = new TokenizerController();
         /*
          * [
@@ -32,6 +33,7 @@ class PositionalIndexController extends Controller
          * */
         $stopWords = StopWordRemovalController::$stopWordList;
         $uniqueTokens = array_unique($tokenizer->constructTokens());
+
         foreach ($uniqueTokens as $key => $term) {
             if(in_array($term, $stopWords)){
                 unset($uniqueTokens[$key]);
@@ -41,11 +43,11 @@ class PositionalIndexController extends Controller
         foreach ($uniqueTokens as $token) {
             $positions = [];
             $frequency = 0;
-            foreach ($tokenizer->files as $file) {
-                $docId = array_search($file, $tokenizer->files) + 1;
-                $frequency += substr_count($file, $token);
+            foreach ($tokenizer->files as $index => $file) {
+                $docId = $index + 1;
                 $occurrences = array_keys(preg_split('/\s+/', $file), $token);
                 if(count($occurrences) > 0){
+                    ++$frequency;
                     $positions[$docId] =  $occurrences;
                 }
             }
@@ -66,7 +68,15 @@ class PositionalIndexController extends Controller
     }
     public function queryResult(Request $request)
     {
+
+
         $terms = explode(' ', $request->queryInput); // ['cats', 'dogs'] => 'cats dogs'
+
+        foreach ($terms as $index => $term)
+        {
+            $terms[$index] = Lemmatizer::getLemma($term);
+        }
+
         $relevantDocs = [];
         $positionalIndex = $this->buildModel();
         $positionalIndex = collect($positionalIndex);
@@ -78,17 +88,36 @@ class PositionalIndexController extends Controller
         }
 
         if(count($selectedPositionKeys) > 1){
+
             $intersectedDocs = call_user_func_array('array_intersect', $selectedPositionKeys);
 
-            foreach ($intersectedDocs as $intersectedDoc) {
+
+            foreach ($intersectedDocs as $intersectedDoc)
+            {
                 $fileContent = file_get_contents(storage_path('app/files/file_' . $intersectedDoc . '.txt'));
-                !str_contains($fileContent, $request['queryInput']) ?: array_push($relevantDocs, $intersectedDoc);
+
+                $token = strtok($fileContent , " \n\t\r");
+
+                $fileContentLemmitized = "";
+
+                while ($token !== false)
+                {
+                    $token = Lemmatizer::getLemma($token);
+                    $fileContentLemmitized .= $token . " ";
+                    $token = strtok(" \n\t\r");
+                }
+
+                dd($fileContentLemmitized);
+
+                !str_contains($fileContentLemmitized, implode(" " , $terms) ) ?: array_push($relevantDocs, $intersectedDoc);
+
             }
-        }elseif (count($selectedPositionKeys) == 1){
+
+        }elseif (count($selectedPositionKeys) == 1)
+        {
             $relevantDocs = $selectedPositionKeys[0];
         }
 
-        dd($relevantDocs);
 
         return view('query_result');
     }

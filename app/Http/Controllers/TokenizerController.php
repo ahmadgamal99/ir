@@ -34,7 +34,17 @@ class TokenizerController extends Controller
             $file = fopen(storage_path('app/files/file_'. $i .'.txt'), "r");
             $file_content = fread($file,filesize(storage_path('app/files/file_' . $i .'.txt')));
 
-            array_push($files , $file_content);
+            $token = strtok($file_content , " \n\t");
+            $fileContentLemmitized = "";
+
+            while ($token !== false)
+            {
+                $token = Lemmatizer::getLemma($token);
+                $fileContentLemmitized .= $token . " ";
+                $token = strtok(" \n\t\r");
+            }
+
+            array_push($files , $fileContentLemmitized);
 
         }
 
@@ -48,7 +58,6 @@ class TokenizerController extends Controller
             $token = strtok($file , " \n\t");
             while ($token !== false)
             {
-//                $token = Lemmatizer::getLemma($token);
                 array_push($tokens, $token);
                 $token = strtok(" \n\t");
             }
