@@ -70,13 +70,14 @@ class PositionalIndexController extends Controller
     public function queryResult(Request $request)
     {
 
-
+        $vectorSpaceModel = new VectorSpaceController();
         $terms = explode(' ', $request->queryInput); // ['cats', 'dogs'] => 'cats dogs'
 
         foreach ($terms as $index => $term)
         {
             $terms[$index] = Lemmatizer::getLemma($term);
         }
+
 
         $relevantDocs = [];
         $positionalIndex = $this->buildModel();
@@ -118,8 +119,10 @@ class PositionalIndexController extends Controller
             $relevantDocs = $selectedPositionKeys[0];
         }
 
-        dd($relevantDocs);
 
+
+        $similarities = $vectorSpaceModel->queryDocumentSimilarities(implode(' ', $terms), $relevantDocs);
+        dd($similarities, $relevantDocs);
         return view('query_result');
     }
 

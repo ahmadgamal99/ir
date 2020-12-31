@@ -195,10 +195,6 @@ class VectorSpaceController extends Controller
                 return pow($item['tf-idf'], 2);
             })->sum();
 
-            $updateSimilarity =collect($similarityTable)->map(function($item) use ($length, $similarityTables) {
-                $item['normalize'] = $item['tf-idf'] /$length;
-            });
-
             array_push($docsLengths, $length);
         }
         $newSimilarityTables = [];
@@ -216,5 +212,75 @@ class VectorSpaceController extends Controller
 
         }
         return $newSimilarityTables;
+    }
+
+
+    public function queryDocumentSimilarities($queryStringLemmitized = 'cat', $relevantDocs = [1,5,8])
+    {
+        $tokenizer = new TokenizerController();
+        $files = $tokenizer->getFiles();
+        $similarityTables = $this->buildSimilarityTables();
+        $similarityTablesOfRelevantDocs = [];
+        $similarityTablesOfQuery = [];
+        $queryUniqueTokens = array_unique(array_filter(explode(' ', $queryStringLemmitized)));
+
+        foreach ($relevantDocs as $relevantDoc) {
+            $similarityTablesOfRelevantDocs[$relevantDoc] = $similarityTables[$relevantDoc - 1];
+        }
+
+
+
+
+        foreach ($queryUniqueTokens as $uniqueToken) {
+            $df = 0;
+            foreach ($files as  $file)
+            {
+                ! str_contains($file , $uniqueToken) ?: ++$df;
+            }
+
+            if($df > 0){
+                $tf = substr_count($queryStringLemmitized , $uniqueToken);
+                $tfWeight = round(log(1 + $tf , 10) , 1);
+                $idfWeight = round(log(10/$df, 10),1);
+
+                $similarityTablesOfQuery[$uniqueToken] = [
+                    "tf" => $tf,
+                    "tfWeight" => $tfWeight,
+                    "idfWeight" => $idfWeight,
+                    "tf-idf" => $tfWeight * $idfWeight,
+                    "normalize" => 0, // tf-idf / length
+                ];
+            }
+
+        }
+
+        $similarityTablesOfQuery = collect($similarityTablesOfQuery);
+
+        $queryLength = $similarityTablesOfQuery ->map(function($item){
+            return pow($item['tf-idf'], 2);
+        })->sum();
+
+        $newSimilarityTablesOfQuery =[];
+        foreach ($similarityTablesOfQuery as $term => $item){
+            $newSimilarityTablesOfQuery[$term] = [
+                "tf" => $item['tf'],
+                "tfWeight" => $item['tfWeight'],
+                "idfWeight" => $item['idfWeight'],
+                "tf-idf" => $item['tf-idf'],
+                "normalize" => $item['tf-idf'] / $queryLength,
+            ];
+        }
+
+        $queryDocumentSimilarities = [];
+
+        foreach ($similarityTablesOfRelevantDocs as $docID => $value){
+            $queryDocumentSimilarities[$docID] = 0;
+            foreach ($value as $term => $item){
+                $queryDocumentSimilarities[$docID] += ($newSimilarityTablesOfQuery[$term]['normalize'] ?? 0) * $item['normalize'];
+            }
+        }
+
+//        dd($similarityTablesOfRelevantDocs, $newSimilarityTablesOfQuery, $queryDocumentSimilarities);
+        return $queryDocumentSimilarities;
     }
 }

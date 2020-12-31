@@ -26,4 +26,5 @@ Route::get('/idf','VectorSpaceController@inverseDocumentFrequency');
 Route::get('/tf-idf-matrix','VectorSpaceController@TF_IDFWeightMatrix');
 Route::get('/similarity','VectorSpaceController@Normailize');
 Route::post('/do-query','PositionalIndexController@queryResult');
+Route::get('/queryDocumentSimilarities','VectorSpaceController@queryDocumentSimilarities');
 
