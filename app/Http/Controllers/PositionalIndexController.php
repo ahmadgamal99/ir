@@ -70,6 +70,7 @@ class PositionalIndexController extends Controller
     public function queryResult(Request $request)
     {
 
+
         $vectorSpaceModel = new VectorSpaceController();
         $terms = explode(' ', $request->queryInput); // ['cats', 'dogs'] => 'cats dogs'
 
@@ -79,19 +80,31 @@ class PositionalIndexController extends Controller
         }
 
 
+
         $relevantDocs = [];
         $positionalIndex = $this->buildModel();
+
         $positionalIndex = collect($positionalIndex);
+
+        // get the files that contains each word in the query
         $selectedPositions = $positionalIndex->whereIn('term', $terms)->pluck('positions')->toArray();
         $selectedPositionKeys = [];
+
+        // make the structure simpler
 
         foreach ($selectedPositions as $selectedPosition) {
             array_push($selectedPositionKeys,array_keys($selectedPosition));
         }
 
+
+
         if(count($selectedPositionKeys) > 1){
 
+            // obtain the intersection among files
+
             $intersectedDocs = call_user_func_array('array_intersect', $selectedPositionKeys);
+
+
 
 
             foreach ($intersectedDocs as $intersectedDoc)
@@ -121,9 +134,17 @@ class PositionalIndexController extends Controller
 
 
 
-        $similarities = $vectorSpaceModel->queryDocumentSimilarities(implode(' ', $terms), $relevantDocs);
-        dd($similarities, $relevantDocs);
-        return view('query_result');
+        //$similarities = $vectorSpaceModel->queryDocumentSimilarities(implode(' ', $terms), $relevantDocs);
+        //dd($similarities, $relevantDocs);
+
+        return view('query_results' , compact('relevantDocs'));
+    }
+
+    public function showFile($id)
+    {
+        $fileContent = file_get_contents(storage_path('app/files/file_' . $id . '.txt'));
+        $file_no = $id;
+        return view('show_file' , compact('fileContent','file_no'));
     }
 
 }

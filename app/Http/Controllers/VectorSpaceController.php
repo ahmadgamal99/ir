@@ -97,6 +97,7 @@ class VectorSpaceController extends Controller
             }
         }
 
+
         foreach($uniqueTokens as  $uniqueToken)
         {
             $df = 0;
@@ -105,8 +106,10 @@ class VectorSpaceController extends Controller
                 ! str_contains($file , $uniqueToken) ?: ++$df;
             }
 
+
             foreach($files as $fileIndex => $file)
             {
+
                 $tf = substr_count($file , $uniqueToken);
 
                 $tfWeight = round(log(1 + $tf , 10) , 1);
@@ -116,7 +119,9 @@ class VectorSpaceController extends Controller
                 $tf_Idf_Matrix[$uniqueToken][ 'file ' . ( $fileIndex + 1 ) ] = $tfWeight * $idfWeight;
 
             }
+
         }
+
 
         return view('tf_idf_matrix' , compact('tf_Idf_Matrix'));
 
@@ -134,6 +139,7 @@ class VectorSpaceController extends Controller
 
     public function buildSimilarityTables()
     {
+
         $tokenizer = new TokenizerController();
         $files = $tokenizer->getFiles();
         $uniqueTokens = array_unique($tokenizer->constructTokens());
@@ -162,18 +168,20 @@ class VectorSpaceController extends Controller
             }
 
 
+
             foreach ($uniqueTokens as $uniqueToken) {
                 $df = 0;
-                foreach ($files as  $file)
+
+                foreach ($files as  $smallFile)
                 {
-                    ! str_contains($file , $uniqueToken) ?: ++$df;
+                    ! str_contains($smallFile , $uniqueToken) ?: ++$df;
                 }
 
                 $tf = substr_count($file , $uniqueToken);
 
-                $tfWeight = round(log(1 + $tf , 10) , 1);
+                $tfWeight = round(log(1 + $tf , 10) , 2);
 
-                $idfWeight = round(log(10/$df, 10),1);
+                $idfWeight = round(log(10/$df, 10),2);
 
                 $similarityTables[$fileIndex][$uniqueToken] = [
                     "tf" => $tf,
@@ -190,10 +198,16 @@ class VectorSpaceController extends Controller
         $similarityTables = collect($similarityTables);
         $docsLengths = [];
 
+        // initialize the normalization in each term
+
+
         foreach ($similarityTables as $similarityTable) {
+
             $length = collect($similarityTable)->map(function($item){
                 return pow($item['tf-idf'], 2);
             })->sum();
+
+            $length = sqrt($length);
 
             array_push($docsLengths, $length);
         }
@@ -211,20 +225,25 @@ class VectorSpaceController extends Controller
             }
 
         }
+
         return $newSimilarityTables;
     }
 
 
-    public function queryDocumentSimilarities($queryStringLemmitized = 'cat', $relevantDocs = [1,5,8])
+    public function queryDocumentSimilarities($queryStringLemmitized = 'cat dog', $relevantDocs = [1,5,8])
     {
+
         $tokenizer = new TokenizerController();
         $files = $tokenizer->getFiles();
         $similarityTables = $this->buildSimilarityTables();
+
+
         $similarityTablesOfRelevantDocs = [];
-        $similarityTablesOfQuery = [];
+        $similarityTableOfQuery = [];
         $queryUniqueTokens = array_unique(array_filter(explode(' ', $queryStringLemmitized)));
 
-        foreach ($relevantDocs as $relevantDoc) {
+        foreach ($relevantDocs as $relevantDoc)
+        {
             $similarityTablesOfRelevantDocs[$relevantDoc] = $similarityTables[$relevantDoc - 1];
         }
 
@@ -240,10 +259,10 @@ class VectorSpaceController extends Controller
 
             if($df > 0){
                 $tf = substr_count($queryStringLemmitized , $uniqueToken);
-                $tfWeight = round(log(1 + $tf , 10) , 1);
-                $idfWeight = round(log(10/$df, 10),1);
+                $tfWeight = round(log(1 + $tf , 10) , 2);
+                $idfWeight = round(log(10/$df, 10),2);
 
-                $similarityTablesOfQuery[$uniqueToken] = [
+                $similarityTableOfQuery[$uniqueToken] = [
                     "tf" => $tf,
                     "tfWeight" => $tfWeight,
                     "idfWeight" => $idfWeight,
@@ -254,14 +273,19 @@ class VectorSpaceController extends Controller
 
         }
 
-        $similarityTablesOfQuery = collect($similarityTablesOfQuery);
+        $similarityTableOfQuery = collect($similarityTableOfQuery);
 
-        $queryLength = $similarityTablesOfQuery ->map(function($item){
+
+        $queryLength = $similarityTableOfQuery ->map(function($item){
             return pow($item['tf-idf'], 2);
         })->sum();
 
+        $queryLength = sqrt($queryLength);
+
         $newSimilarityTablesOfQuery =[];
-        foreach ($similarityTablesOfQuery as $term => $item){
+
+        foreach ($similarityTableOfQuery as $term => $item){
+
             $newSimilarityTablesOfQuery[$term] = [
                 "tf" => $item['tf'],
                 "tfWeight" => $item['tfWeight'],
@@ -269,18 +293,115 @@ class VectorSpaceController extends Controller
                 "tf-idf" => $item['tf-idf'],
                 "normalize" => $item['tf-idf'] / $queryLength,
             ];
+
         }
 
         $queryDocumentSimilarities = [];
 
-        foreach ($similarityTablesOfRelevantDocs as $docID => $value){
+        foreach ($similarityTablesOfRelevantDocs as $docID => $similarityTableOfRelevantDocs)
+        {
+
             $queryDocumentSimilarities[$docID] = 0;
-            foreach ($value as $term => $item){
-                $queryDocumentSimilarities[$docID] += ($newSimilarityTablesOfQuery[$term]['normalize'] ?? 0) * $item['normalize'];
+
+            foreach ($similarityTableOfRelevantDocs as $term => $table)
+            {
+                $queryDocumentSimilarities[$docID] += round(($newSimilarityTablesOfQuery[$term]['normalize'] ?? 0) * $table['normalize'] ,2 );
             }
+
+
         }
 
-//        dd($similarityTablesOfRelevantDocs, $newSimilarityTablesOfQuery, $queryDocumentSimilarities);
+
         return $queryDocumentSimilarities;
     }
+
+
+    public function doQuery()
+    {
+        return view('do_query_similarity');
+    }
+
+
+    public function queryResult(Request $request)
+    {
+
+
+        $positionalIndex = new PositionalIndexController();
+        $terms = explode(' ', $request->queryInput); // ['cats', 'dogs'] => 'cats dogs'
+
+        foreach ($terms as $index => $term)
+        {
+            $terms[$index] = Lemmatizer::getLemma($term);
+        }
+
+
+
+
+
+        $relevantDocs = [];
+        $positionalIndex = $positionalIndex->buildModel();
+
+
+        $positionalIndex = collect($positionalIndex);
+
+
+        // get the files that contains each word in the query
+        $selectedPositions = $positionalIndex->whereIn('term', $terms)->pluck('positions')->toArray();
+        $selectedPositionKeys = [];
+
+        // make the structure simpler
+
+        foreach ($selectedPositions as $selectedPosition) {
+            array_push($selectedPositionKeys,array_keys($selectedPosition));
+        }
+
+
+        if(count($selectedPositionKeys) > 1){
+
+            // obtain the intersection among files
+
+            $intersectedDocs = call_user_func_array('array_intersect', $selectedPositionKeys);
+
+
+
+
+            foreach ($intersectedDocs as $intersectedDoc)
+            {
+                $fileContent = file_get_contents(storage_path('app/files/file_' . $intersectedDoc . '.txt'));
+
+                $token = strtok($fileContent , " \n\t\r");
+
+                $fileContentLemmitized = "";
+
+                while ($token !== false)
+                {
+                    $token = Lemmatizer::getLemma($token);
+                    $fileContentLemmitized .= $token . " ";
+                    $token = strtok(" \n\t\r");
+                }
+
+
+                !str_contains($fileContentLemmitized, implode(" " , $terms) ) ?: array_push($relevantDocs, $intersectedDoc);
+
+            }
+
+        }elseif (count($selectedPositionKeys) == 1)
+        {
+            $relevantDocs = $selectedPositionKeys[0];
+        }
+
+
+        $similarities = $this->queryDocumentSimilarities(implode(' ', $terms), $relevantDocs);
+
+        // sort the array descending
+
+
+        arsort($similarities);
+
+        $rankedDocs = $similarities;
+
+
+        return view('query_results_ranked' , compact('rankedDocs'));
+    }
+
 }

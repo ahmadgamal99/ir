@@ -1,1 +1,4 @@
-asdasdasdasdasda asfd asfa sf asfasfa cats
+sequential programming is writing a application as a series of steps . Modern compiler might rearrange the steps for faster
+execution . Almost anything with the exception of IO or communication could be consider sequential , even steps in a thread could
+be considered sequential . and its writing code for a single thread of operation . Concurrent programming , on the other hand , is
+writing code for multiple threads of operation .

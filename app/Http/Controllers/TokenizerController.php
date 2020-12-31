@@ -37,7 +37,7 @@ class TokenizerController extends Controller
             $token = strtok($file_content , " \n\t");
             $fileContentLemmitized = "";
 
-            while ($token !== false)
+            while ($token !== false )
             {
                 $token = Lemmatizer::getLemma($token);
                 $fileContentLemmitized .= $token . " ";

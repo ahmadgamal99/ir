@@ -1,1 +1,5 @@
-asdasdasdasdasda asfd asfa sf cats dogs asfasfa
+In computing , a parallel programming model is an abstraction of parallel computer architecture , with which it is convenient to
+express algorithms and their composition in programs . The value of a programming model can be judged on its generality : how well
+a range of different problems can be expressed for a variety of different architectures , and its performance : how efficiently the
+compiled programs can execute . The implementation of a parallel programming model can take the form of a library invoked from
+a sequential language , as an extension to an existing language , or as an entirely new language .

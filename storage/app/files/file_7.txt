@@ -1,1 +1,6 @@
-asdasdasdasdasda asfd asfa sf asfasfa
+Before taking a toll on parallel programing , first let’s take a look at the background of computations of a computer software and why it failed for the modern era .
+Computer software were written conventionally for serial computing . This meant that to solve a problem , an algorithm divides the
+problem into smaller instructions . These discrete instructions are then executed on Central Processing Unit of a computer one by
+one . Only after one instruction is finished , next one starts . Real life example of this would be people standing in a queue waiting
+for movie ticket and there is only cashier . Cashier is giving ticket one by one to the persons . Complexity of this situation increases when
+there are 2 queues and only one cashier .

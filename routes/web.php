@@ -20,11 +20,17 @@ Route::get('/',function(){
 Route::get('/tokenization','TokenizerController@viewTokens');
 Route::get('/Stop-word-removal','StopWordRemovalController@stopWordRemovalView');
 Route::get('/positional_index_model','PositionalIndexController@positionalModelView');
-Route::get('/do-query','PositionalIndexController@doQuery');
 Route::get('/term_frequency_matrix','VectorSpaceController@termFrequency');
 Route::get('/idf','VectorSpaceController@inverseDocumentFrequency');
 Route::get('/tf-idf-matrix','VectorSpaceController@TF_IDFWeightMatrix');
 Route::get('/similarity','VectorSpaceController@Normailize');
-Route::post('/do-query','PositionalIndexController@queryResult');
+Route::get('/file/{id}','PositionalIndexController@showFile');
 Route::get('/queryDocumentSimilarities','VectorSpaceController@queryDocumentSimilarities');
+
+Route::get('/do-query','PositionalIndexController@doQuery');
+Route::post('/do-query','PositionalIndexController@queryResult');
+
+
+Route::get('/do-query-similarity','VectorSpaceController@doQuery');
+Route::post('/do-query-similarity','VectorSpaceController@queryResult');
 

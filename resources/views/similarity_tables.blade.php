@@ -2,9 +2,10 @@
 @section('content')
     <div>
         <h1 class="text-center pt-25 font-weight-bolder">Similarity Tables</h1>
-    <div class="flex-center p-35 d-block">
+    <div class="flex-center p-25 d-block">
         @foreach($similarityTables as $key => $item)
         <table class="table table-dark rounded p-10 text-center" style="">
+            <h1 class="text-center m-15">{{ 'File ' .  ($key + 1) . ' Similarity Table'}}</h1>
             <thead>
             <tr>
                 <th>Term</th>
@@ -34,7 +35,7 @@
     </div>
 
     <div class="mx-auto">
-            <a href="/similarity" class="btn btn-primary shadow-lg font-size-h1 mx-auto text-center mb-20" type="submit" style="width:fit-content">Similarity</a>
+            <a href="/do-query-similarity" class="btn btn-primary shadow-lg font-size-h1 mx-auto text-center mb-20" type="submit" style="width:fit-content">Do A Query</a>
     </div>
 
 @endsection

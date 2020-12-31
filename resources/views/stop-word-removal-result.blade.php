@@ -25,6 +25,5 @@
 
     <div class="mx-auto">
             <a href="/positional_index_model" class="btn btn-primary shadow-lg font-size-h1 mx-auto text-center mb-20" type="submit" style="width:fit-content">Positional Index Model</a>
-            <a href="/term_frequency_matrix" class="btn btn-primary shadow-lg font-size-h1 mx-auto text-center mb-20" type="submit" style="width:fit-content">Term Frequency</a>
     </div>
 @endsection

@@ -3,10 +3,25 @@
   <component name="ChangeListManager">
     <list default="true" id="af41f400-d6be-4361-98c5-2c6feb07abfe" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PositionalIndexController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PositionalIndexController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/StopWordRemovalController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/StopWordRemovalController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/TokenizerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/TokenizerController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/VectorSpaceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/VectorSpaceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/tf_idf_matrix.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/tf_idf_matrix.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/do_query.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/do_query.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/query_results.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/query_results.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/similarity_tables.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/similarity_tables.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/stop-word-removal-result.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/stop-word-removal-result.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.php" beforeDir="false" afterPath="$PROJECT_DIR$/server.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_10.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_10.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_7.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_7.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_8.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_8.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/app/files/file_9.txt" beforeDir="false" afterPath="$PROJECT_DIR$/storage/app/files/file_9.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,6 +195,7 @@
       <workItem from="1609020417320" duration="10000" />
       <workItem from="1609356276728" duration="970000" />
       <workItem from="1609358491611" duration="3385000" />
+      <workItem from="1609400610634" duration="12560000" />
     </task>
     <servers />
   </component>

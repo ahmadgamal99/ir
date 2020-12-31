@@ -1,1 +1,6 @@
-asdasdasdasdasda asfd asfa sf asfasfa
+reactive programming (RP) is not something new and cutting-edge when it comes to application development .
+Chances are , you’ve already heard about it . The term was initially introduced to the IT world in the 1960-s
+and ever since much has been said and written in its regard . Unfortunately , as it often happens , the new concept
+quickly fueled a set of misinterpretations around itself , and still continues doing so today . The Reactive Manifesto of 2014
+that introduced reactive systems and their four sacred principles messed everything up even more So , let’s try to clarify
+what is what and understand why and where we need reactive programming in Java application development (if we really do)

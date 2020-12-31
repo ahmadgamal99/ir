@@ -1,1 +1,5 @@
-asdasdasdasdasda asfd asfa sf asfasfa
+reactive programming has been around for some time but gained much higher interest during the last couple of years .
+The reason for this relates to the fact that traditional imperative programming has some limitations when it comes to coping
+with the demands of today , where applications need to have high availability and provide low response times also during high load .
+To understand what reactive programming is and what benefits it brings , let’s first consider the traditional way of developing
+a web application with Spring

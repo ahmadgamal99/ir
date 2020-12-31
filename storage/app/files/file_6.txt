@@ -1,1 +1,5 @@
-asdasdasdasdasda asfd asfa sf dog dog dog
+What is parallel programming ? It is a common process that is used in every facet of computer programming in this country
+and after its rebirth in late 2015 , it has fast overtaken concurrent programming as the first choice for any programmer
+who has several architectures that need to be processed at the same time . Here is a quick primer , complete with advantages
+and disadvantages of the process as well as a rundown of where it is used , for students and professionals who are just coming
+to understanding what parallel computing is .

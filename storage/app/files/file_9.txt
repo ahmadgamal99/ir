@@ -1,1 +1,5 @@
-asdasdasdasdasda asfd  sf asfasfa
+sequential programming It is clear that the final values of the variables in the example program depend on the order that
+statements are executed in . In general , given the same input data , a sequential program will always execute the same sequence of
+instructions and it will always produce the same results . Sequential program execution is deterministic . The sequential paradigm
+has the following two characteristics : the textual order of statements specifies their order of execution ; successive statements
+must be executed without any overlap (in time) with one another . Neither of these properties applies to concurrent programs .
